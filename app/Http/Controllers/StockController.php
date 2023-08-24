@@ -49,8 +49,9 @@ class StockController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, Stock $stock)
-    {
+    { 
         $request->validate([
+            'stock_name'=>'required',
             'stock_quantity'=>'required'
         ]);
 
@@ -70,6 +71,7 @@ class StockController extends Controller
         }
     }
 
+    
     /**
      * Remove the specified resource from storage.
      *
