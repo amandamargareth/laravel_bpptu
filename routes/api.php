@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\ActionController;
+use App\Http\Controllers\UpdateController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -35,8 +39,12 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
-Route::resource('orders',OrderController::class);
+Route::put('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
 Route::resource('stocks',StockController::class);
+Route::resource('orders',OrderController::class);
+Route::resource('actions',ActionController::class);
+// Route::resource('updates',UpdateController::class);
 
 
 
