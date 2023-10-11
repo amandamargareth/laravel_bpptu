@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\ActionController;
-use App\Http\Controllers\UpdateController;
+use App\Http\Controllers\StatusController;
+
 
 
 /*
@@ -39,12 +40,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('logout');
-Route::put('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+// Route::put('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus')
+Route::put('/update-status/{id}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+Route::get('/waiting-list', [OrderController::class, 'waitingList'])->name('orders.waitingList');
 
 Route::resource('stocks',StockController::class);
 Route::resource('orders',OrderController::class);
 Route::resource('actions',ActionController::class);
-// Route::resource('updates',UpdateController::class);
+Route::resource('statuss',StatusController::class);
+
 
 
 

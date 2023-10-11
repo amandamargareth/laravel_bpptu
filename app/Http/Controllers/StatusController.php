@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use Carbon\Carbon;
 use Illuminate\View\View;
 
-class ActionController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,15 +20,14 @@ class ActionController extends Controller
     
     public function index()
     {
-        return Order::select('id','name', 'address', 'city', 'phone', 'variety', 'quantity', 'to', 'created_at', 'status')
-        ->where('status', 'Belum Selesai')
+        return Order::select('id','name', 'address', 'city', 'phone', 'variety', 'quantity', 'to', 'status', 'created_at')
         ->get();
     }
 
     public function page(): View
     {
-        return view('order.index', [
-            'updates' => DB::table('orders')->paginate(15)
+        return view('status.index', [
+            'statuss' => DB::table('orders')->paginate(15)
         ]);
     }
 
@@ -51,15 +50,15 @@ class ActionController extends Controller
         ]);
 
         try{
-             Update::create($request->post());
+             Order::create($request->post());
 
             return response()->json([
-                'message'=>'Update Created Successfully!!'
+                'message'=>'Order Created Successfully!!'
             ]);
         }catch(\Exception $e){
             \Log::error($e->getMessage());
             return response()->json([
-                'message'=>'Something goes wrong while creating a update!'
+                'message'=>'Something goes wrong while creating a status!'
             ],500);
         }
     }
@@ -67,13 +66,13 @@ class ActionController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Update  $update
+     * @param  \App\Models\Order  $status
      * @return \Illuminate\Http\Response
      */
-    public function show(Update $update)
+    public function show(Status $status)
     {
         return response()->json([
-            'update'=>$update
+            'status'=>$status
         ]);
     }
 
@@ -81,10 +80,10 @@ class ActionController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Update  $update
+     * @param  \App\Models\Order  $status
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Update $update)
+    public function update(Request $request, Status $status)
     {
         $request->validate([
             'name'=>'required',
@@ -99,48 +98,57 @@ class ActionController extends Controller
 
         try{
 
-            $update->fill($request->post())->update('status', 'Selesai');
+            $status->fill($request->post())->update();
 
             return response()->json([
-                'message'=>'Update Updated Successfully!!'
+                'message'=>'Status Updated Successfully!!'
             ]);
 
         }catch(\Exception $e){
             \Log::error($e->getMessage());
             return response()->json([
-                'message'=>'Something goes wrong while updating a update!!'
+                'message'=>'Something goes wrong while updating a status!!'
             ],500);
         }
     }
 
+    // public function changeStatus(Request $request, Status $status){
+    //     $status->status = 'selesai';
+    //     $status->save();
+
+    //     return response()->json(['message' => 'Status changed to "selesai"']);
+    // }
+
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Update  $update
+     * @param  \App\Models\Status  $status
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Update $update)
+    public function destroy(Status $status)
     {
         try {
 
-            if($update->image){
-                $exists = Storage::disk('public')->exists("update/image/{$update->image}");
+            if($status->image){
+                $exists = Storage::disk('public')->exists("status/image/{$status->image}");
                 if($exists){
-                    Storage::disk('public')->delete("update/image/{$update->image}");
+                    Storage::disk('public')->delete("status/image/{$status->image}");
                 }
             }
 
-            $update->delete();
+            $status->delete();
 
             return response()->json([
-                'message'=>'Update Deleted Successfully!!'
+                'message'=>'Status Deleted Successfully!!'
             ]);
             
         } catch (\Exception $e) {
             \Log::error($e->getMessage());
             return response()->json([
-                'message'=>'Something goes wrong while deleting a update!!'
+                'message'=>'Something goes wrong while deleting a status!!'
             ]);
         }
     }
+
+    
 }

@@ -21,6 +21,7 @@ class OrderController extends Controller
     public function index()
     {
         return Order::select('id','name', 'address', 'city', 'phone', 'variety', 'quantity', 'to', 'status', 'created_at')
+        ->orderBy('status', 'asc')
         ->get();
     }
 
@@ -112,12 +113,29 @@ class OrderController extends Controller
         }
     }
 
-    public function changeStatus(Request $request, Order $order){
-        $order->status = 'selesai';
-        $order->save();
+    public function waitingList()
+{
+    return Order::select('id', 'name', 'address', 'city', 'phone', 'variety', 'quantity', 'to', 'created_at', 'status')
+        ->where('status', 'Belum Selesai')
+        ->get();
+}
 
-        return response()->json(['message' => 'Status changed to "selesai"']);
+
+    public function updateStatus($id)
+{
+    // Temukan entitas berdasarkan $id
+    $order = Order::find($id);
+
+    if (!$order) {
+        return response()->json(['message' => 'Order tidak ditemukan'], 404);
     }
+
+    // Ubah kolom status menjadi "Selesai"
+    $order->status = 'Selesai';
+    $order->save();
+
+    return response()->json(['message' => 'Status berhasil diperbarui']);
+}
 
     /**
      * Remove the specified resource from storage.
@@ -149,4 +167,6 @@ class OrderController extends Controller
             ]);
         }
     }
+
+    
 }
