@@ -40,7 +40,7 @@ class StockController extends Controller
     {
         $request->validate([
             'stock_name'=>'required',
-            'stock_quantity'=>'required'
+            'stock_quantity'=>'required|integer|min:0'
         ]);
 
         try{

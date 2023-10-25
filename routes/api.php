@@ -43,6 +43,8 @@ Route::post('/logout', App\Http\Controllers\Api\LogoutController::class)->name('
 // Route::put('/orders/{order}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus')
 Route::put('/update-status/{id}', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
 Route::get('/waiting-list', [OrderController::class, 'waitingList'])->name('orders.waitingList');
+Route::post('/order', [OrderController::class, 'store'])->name('orders.store');
+Route::get('/task', [OrderController::class, 'taskCount'])->name('orders.taskCount');
 
 Route::resource('stocks',StockController::class);
 Route::resource('orders',OrderController::class);
