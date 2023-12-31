@@ -62,3 +62,7 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Keterangan
+
+Didalam codingan ini terdapat 4 model yaitu Order, Stock, User. Order untuk membuat order, mengedit order, menghapus order, merubah status. User untuk menambah, mengedit data user admin dan kepala balai. Stock untuk mengedit stock DOC/DOD.
